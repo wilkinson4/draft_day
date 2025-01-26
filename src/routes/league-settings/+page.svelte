@@ -21,7 +21,11 @@
     Item as SelectItem
   } from '$lib/components/ui/select';
 
-  export let data: SuperValidated<Infer<FormSchema>>;
+  interface Props {
+    data: SuperValidated<Infer<FormSchema>>;
+  }
+
+  let { data }: Props = $props();
 
   //@ts-expect-error - TODO: fix this
   const form = superForm(data.form, {
@@ -31,9 +35,9 @@
 
   const { form: formData, enhance } = form;
 
-  $: selectedNumTeams = $formData.numberOfTeams
+  let selectedNumTeams = $derived($formData.numberOfTeams
     ? { value: $formData.numberOfTeams, label: $formData.numberOfTeams }
-    : { value: 12, label: 12 };
+    : { value: 12, label: 12 });
 
   const handleNumTeamsChange = (value: number) => {
     if ($formData.teams.length > value) {
@@ -53,42 +57,48 @@
   </div>
   <form method="POST" use:enhance>
     <Field {form} name="name">
-      <Control let:attrs>
-        <Label>Name</Label>
-        <Input {...attrs} bind:value={$formData.name} />
-      </Control>
+      <Control >
+        {#snippet children({ attrs })}
+                <Label>Name</Label>
+          <Input {...attrs} bind:value={$formData.name} />
+                      {/snippet}
+            </Control>
       <FieldErrors />
     </Field>
     <Field {form} name="numberOfTeams">
-      <Control let:attrs>
-        <SelectRoot
-          selected={selectedNumTeams}
-          onSelectedChange={(v) => {
-            v && ($formData.numberOfTeams = v.value);
+      <Control >
+        {#snippet children({ attrs })}
+                <SelectRoot
+            selected={selectedNumTeams}
+            onSelectedChange={(v) => {
+              v && ($formData.numberOfTeams = v.value);
 
-            v && handleNumTeamsChange(v.value);
-          }}
-        >
-          <SelectTrigger {...attrs} class="w-[180px]">
-            <SelectValue placeholder="Number Of Teams" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={8} label="8" />
-            <SelectItem value={10} label="10" />
-            <SelectItem value={12} label="12" />
-          </SelectContent>
-        </SelectRoot>
-        <input hidden bind:value={$formData.numberOfTeams} name={attrs.name} />
-      </Control>
+              v && handleNumTeamsChange(v.value);
+            }}
+          >
+            <SelectTrigger {...attrs} class="w-[180px]">
+              <SelectValue placeholder="Number Of Teams" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={8} label="8" />
+              <SelectItem value={10} label="10" />
+              <SelectItem value={12} label="12" />
+            </SelectContent>
+          </SelectRoot>
+          <input hidden bind:value={$formData.numberOfTeams} name={attrs.name} />
+                      {/snippet}
+            </Control>
       <FieldErrors />
     </Field>
     <Fieldset {form} name="teams">
       {#each $formData.teams as _, i}
         <ElementField {form} name="teams[{i}]">
-          <Control let:attrs>
-            <Label>Enter Team {i + 1} Name</Label>
-            <Input {...attrs} bind:value={$formData.teams[i]} />
-          </Control>
+          <Control >
+            {#snippet children({ attrs })}
+                        <Label>Enter Team {i + 1} Name</Label>
+              <Input {...attrs} bind:value={$formData.teams[i]} />
+                                  {/snippet}
+                    </Control>
         </ElementField>
       {/each}
       <FieldErrors />

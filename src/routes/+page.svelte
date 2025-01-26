@@ -4,6 +4,7 @@
 </script>
 
 <section>
+  <h1>Welcome to Draft Day</h1>
   <Button on:click={() => signOut()}>Sign Out</Button>
 </section>
 
