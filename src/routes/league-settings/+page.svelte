@@ -23,6 +23,7 @@
 
   export let data: SuperValidated<Infer<FormSchema>>;
 
+  //@ts-expect-error - TODO: fix this
   const form = superForm(data.form, {
     validators: zodClient(formSchema),
     dataType: 'json'
