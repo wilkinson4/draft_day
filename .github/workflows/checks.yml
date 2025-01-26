@@ -1,0 +1,22 @@
+name: Check Types and Lint
+
+on:
+  pull_request_target:
+    branches: ["main"]
+
+jobs:
+  check-types-and-lint:
+    name: Check Types and Lint
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm run check
