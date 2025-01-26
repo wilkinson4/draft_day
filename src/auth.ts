@@ -12,5 +12,11 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
       clientSecret: env.GOOGLE_CLIENT_SECRET
     })
   ],
-  secret: 'Some secret'
+  secret: 'Some secret',
+  callbacks: {
+    session({ session, user }) {
+      session.user.id = user.id;
+      return session;
+    }
+  }
 });

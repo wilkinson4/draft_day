@@ -18,7 +18,9 @@
       <Button on:click={() => signOut()}>Sign Out</Button>
     {:else}
       <span class="notSignedInText">You are not signed in</span>
-      <Button on:click={() => signIn('google', { callbackUrl: $page.data.loginRedirectUrl })}>Sign In</Button>
+      <Button on:click={() => signIn('google', { callbackUrl: $page.data.loginRedirectUrl })}>
+        Sign In
+      </Button>
     {/if}
   </div>
 </section>
