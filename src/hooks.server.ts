@@ -5,7 +5,7 @@ import { handle as authenticationHandle } from './auth';
 //@ts-expect-error event and resolve have any type
 async function authorizationHandle({ event, resolve }) {
   // Protect any routes under /authenticated
-  if (event.url.pathname !== '/signin') {
+  if (event.url.pathname !== '/sign-in') {
     const session = await event.locals.auth();
     if (!session) {
       //set cookie to redirect to the page after signing in
@@ -14,11 +14,11 @@ async function authorizationHandle({ event, resolve }) {
         const redirectUrl = url.pathname + url.search + url.hash;
         event.cookies.set('loginRedirectUrl', redirectUrl, { path: '/', httpOnly: false });
       } catch (e) {
-        console.log('Invalid URL. Defaulting to /');
-        event.cookies.set('loginRedirectUrl', '/', { path: '/', httpOnly: false });
+        console.warn('Invalid URL. Defaulting to /league-settings');
+        event.cookies.set('loginRedirectUrl', '/league-settings', { path: '/', httpOnly: false });
       }
       // Redirect to the signin page
-      throw redirect(303, `/signin`);
+      throw redirect(303, `/sign-in`);
     }
   }
 

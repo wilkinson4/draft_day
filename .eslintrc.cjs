@@ -5,7 +5,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:svelte/recommended',
-    'prettier'
+    'plugin:@intlify/svelte/recommended',
+    'plugin:prettier/recommended'
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'import'],
@@ -36,8 +37,18 @@ module.exports = {
         pathGroupsExcludedImportTypes: [],
         alphabetize: { order: 'asc', caseInsensitive: true },
         warnOnUnassignedImports: true,
-        'newlines-between': 'never',
-      },
+        'newlines-between': 'never'
+      }
     ],
+    '@intlify/svelte/no-raw-text': 0,
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn', // or "error"
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
+      }
+    ]
   }
 };
